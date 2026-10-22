@@ -49,7 +49,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
 
   const generateQrCode = async (baseUrl: string, code: string) => {
     const clean = baseUrl.trim().replace(/\/$/, '');
-    const joinUrl = `${clean}/join/${code}`;
+    const joinUrl = `${clean}/#join/${code}`;
     try {
       const url = await QRCode.toDataURL(joinUrl, {
         width: 320,
@@ -400,7 +400,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
                 borderRadius: 4,
               }}
             >
-              {serverUrl.replace(/\/$/, '')}/join/{roomCreated.code}
+              {serverUrl.replace(/\/$/, '')}/#join/{roomCreated.code}
             </div>
             <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginTop: '0.5rem' }}>
               Or enter Room Code on website:

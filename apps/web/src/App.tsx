@@ -16,16 +16,31 @@ export const App: React.FC = () => {
   const [prefilledCode, setPrefilledCode] = useState<string>('');
   const [theme, setTheme] = useState<'paper' | 'night'>(() => storage.getSettings().theme);
 
-  // Check URL paths/hashes for deep links (e.g. /join/CODE or #join/CODE)
+  // Check URL paths/hashes for deep links (e.g. /join/CODE, #join/CODE, or ?join=CODE)
   useEffect(() => {
-    const path = window.location.pathname;
-    const hash = window.location.hash;
+    const checkDeepLink = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      const search = window.location.search;
 
-    const match = path.match(/\/join\/([A-Za-z0-9]{4,8})/i) || hash.match(/#\/?join\/([A-Za-z0-9]{4,8})/i);
-    if (match) {
-      setPrefilledCode(match[1].toUpperCase());
-      setCurrentScreen('join');
-    }
+      const match =
+        path.match(/\/join\/([A-Za-z0-9]{4,8})/i) ||
+        hash.match(/#\/?join\/([A-Za-z0-9]{4,8})/i) ||
+        search.match(/[?&]join=([A-Za-z0-9]{4,8})/i);
+
+      if (match) {
+        setPrefilledCode(match[1].toUpperCase());
+        setCurrentScreen('join');
+      }
+    };
+
+    checkDeepLink();
+    window.addEventListener('hashchange', checkDeepLink);
+    window.addEventListener('popstate', checkDeepLink);
+    return () => {
+      window.removeEventListener('hashchange', checkDeepLink);
+      window.removeEventListener('popstate', checkDeepLink);
+    };
   }, []);
 
   // Update HTML data-theme attribute

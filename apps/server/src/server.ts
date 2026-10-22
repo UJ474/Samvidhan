@@ -36,6 +36,18 @@ export async function createServer() {
       prefix: '/',
     });
 
+    // Handle nested asset requests (e.g. /join/assets/* -> /assets/*)
+    app.get('/join/assets/*', async (req, reply) => {
+      const subpath = (req.params as any)['*'];
+      return reply.sendFile(`assets/${subpath}`);
+    });
+
+    // Clean redirect for browser /join/CODE to root hash /#join/CODE so relative paths never fail
+    app.get('/join/:code', async (req, reply) => {
+      const { code } = req.params as { code: string };
+      return reply.redirect(`/#join/${code}`);
+    });
+
     app.setNotFoundHandler((_req, reply) => {
       reply.sendFile('index.html');
     });
