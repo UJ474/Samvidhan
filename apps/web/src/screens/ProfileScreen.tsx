@@ -215,6 +215,45 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate
               Toggle Theme 🌓
             </button>
           </div>
+
+          <div style={{ borderTop: '1px dashed var(--color-ink-soft)', paddingTop: '1rem', marginTop: '0.5rem' }}>
+            <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Multiplayer Server URL</div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginBottom: '0.5rem' }}>
+              Used when joining or hosting live classroom games
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input
+                type="text"
+                defaultValue={localStorage.getItem('samvidhan_server_url') || 'http://localhost:3001'}
+                placeholder="http://localhost:3001 or https://your-server.onrender.com"
+                id="server-url-input"
+                style={{
+                  flex: 1,
+                  padding: '0.5rem 0.75rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.85rem',
+                  border: '1.5px solid var(--color-ink)',
+                  borderRadius: 4,
+                  backgroundColor: 'var(--color-bg)',
+                  color: 'var(--color-ink)',
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const val = (document.getElementById('server-url-input') as HTMLInputElement)?.value.trim();
+                  if (val) {
+                    localStorage.setItem('samvidhan_server_url', val);
+                    window.location.reload();
+                  }
+                }}
+                className="civic-btn"
+                style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

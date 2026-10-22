@@ -4,6 +4,52 @@ An interactive civic learning platform for the Constitution of India (Parts V & 
 
 ---
 
+## 💡 How the DMG App & Backend Work Together
+
+### 1. Solo Modes (100% Offline in the DMG)
+When you install and open the **DMG (`Samvidhan.app`)**:
+- **Learn**, **Quiz**, **Spin the Wheel**, **Flash Cards**, **Snakes & Ladders**, and **Profile & Bookmarks** are bundled inside the app.
+- **Zero internet connection and NO backend server are needed for solo play.** Everything runs locally on your Mac.
+
+### 2. Live Multiplayer Mode (Classroom & Group Quizzes)
+When you use **Host Game** or **Join Game** with other players joining from phones:
+- In local development: The desktop app connects to `http://localhost:3001` (started via `pnpm run dev:server`).
+- In production: Deploy the backend (`apps/server`) to any cloud host (e.g. Render, Railway, Fly.io, or your VPS). The single deployed server hosts both the WebSocket multiplayer engine AND serves the mobile web join page (`https://your-domain/join/CODE`)!
+- **Configuring the Server in the Desktop App**: Open **Profile & Ledgers ➔ Preferences ➔ Multiplayer Server URL**, enter your deployed URL (e.g. `https://samvidhan.onrender.com`), and click **Save**.
+
+---
+
+## ☁️ Deployment Guide: Step-by-Step
+
+Because `apps/server` automatically serves the pre-compiled `apps/web/dist` on the root `/`, **you only need to deploy ONE unified service** for both the Web join page and the WebSocket backend!
+
+### Option A: 1-Click Free Deploy on Render (Recommended)
+1. Go to [render.com](https://render.com) and connect your GitHub repo (`UJ474/Samvidhan`).
+2. Select **Web Service**. Render will automatically detect [`render.yaml`](file:///Users/utkarshjain/Desktop/Samvidhan/render.yaml):
+   - **Environment**: Node
+   - **Build Command**: `pnpm install && pnpm build`
+   - **Start Command**: `node apps/server/dist/server.js`
+   - **Port**: `3001`
+3. Click **Deploy Web Service**.
+4. Once deployed, Render gives you a public HTTPS URL (e.g., `https://samvidhan.onrender.com`).
+   - Anyone on a phone can visit: `https://samvidhan.onrender.com/join/CODE`
+   - In your Desktop DMG app, set `https://samvidhan.onrender.com` in Profile ➔ Server URL.
+
+### Option B: Railway
+1. Go to [railway.app](https://railway.app) and select **Deploy from GitHub repo**.
+2. Select `UJ474/Samvidhan`.
+3. Set environment variable: `PORT=3001`.
+4. Railway will build using the included [`Dockerfile`](file:///Users/utkarshjain/Desktop/Samvidhan/Dockerfile) or Node buildpack automatically.
+
+### Option C: Docker / Self-Hosted VPS
+A production multi-stage [`Dockerfile`](file:///Users/utkarshjain/Desktop/Samvidhan/Dockerfile) is provided in the repository root:
+```bash
+docker build -t samvidhan .
+docker run -p 3001:3001 samvidhan
+```
+
+---
+
 ## 📁 Repository Structure & Where Everything Lives
 
 ```
@@ -33,7 +79,7 @@ Samvidhan/
 │   │   │   ├── SnakesLaddersScreen.tsx# 2-player pass-and-play board game
 │   │   │   ├── JoinScreen.tsx         # Live player client (/join/:code)
 │   │   │   ├── HostScreen.tsx         # Host projector console & QR code
-│   │   │   └── ProfileScreen.tsx      # Stats, accuracy by organ, theme toggle
+│   │   │   └── ProfileScreen.tsx      # Stats, accuracy by organ, theme & server URL toggle
 │   │   ├── src/components/    # Ashoka Chakra SVG, physical SpinningWheel
 │   │   └── src/services/      # Web Audio synthesizer, LocalStorage, Socket client
 │   └── desktop/               # 🖥️ THE ELECTRON DESKTOP APP
@@ -48,74 +94,22 @@ Samvidhan/
 
 ## 📦 Where is the DMG Stored?
 
-After running the packaging command, the macOS DMG file is generated in:
+After running `pnpm run dist:desktop`, the macOS installer is generated in:
 ```
 apps/desktop/dist/Samvidhan-1.0.0-arm64.dmg
 ```
-
-- **DMG Size**: ~94 MB (minimal footprint containing standard Chromium + Node runtime, with the web app taking < 400 KB).
+- **Size**: ~94 MB (minimal bare Electron runtime with no bloat).
 - **Standalone App Directory**: `apps/desktop/dist/mac-arm64/Samvidhan.app`
 
 ---
 
-## 🌐 Where is the Backend?
+## 🚀 Commands Reference
 
-The backend is located in `apps/server/`:
-- **File**: [`apps/server/src/server.ts`](file:///Users/utkarshjain/Desktop/Samvidhan/apps/server/src/server.ts)
-- **Port**: `3001` (configurable via `PORT` environment variable)
-- **Engine**: [`apps/server/src/room.ts`](file:///Users/utkarshjain/Desktop/Samvidhan/apps/server/src/room.ts)
-- **Key Features**:
-  - Authoritative room state machine: `LOBBY` ➔ `WHEEL` ➔ `QUESTION` ➔ `REVEAL` ➔ `LEADERBOARD` ➔ `FINISHED`.
-  - **Zero answer leaks (Anti-Cheat)**: Questions broadcasted to clients do not include the answer or explanation until the round ends.
-  - **Clock synchronization**: Server sends `serverNow` and `endsAt` so client countdowns are immune to device clock drift.
-  - **Healthcheck endpoint**: `GET http://localhost:3001/healthz`
-
----
-
-## 🚀 Running the App Locally
-
-### 1. Web App (Development)
-```bash
-pnpm run dev:web
-```
-Runs at: `http://localhost:5173`
-
-### 2. Backend Server (Development)
-```bash
-pnpm run dev:server
-```
-Runs at: `http://localhost:3001`
-
-### 3. Desktop App (Electron)
-```bash
-pnpm run dev:desktop
-```
-Launches the native macOS window with menu bar, traffic lights, and keyboard shortcuts (`Space` to advance rounds, `Esc` to pause).
-
-### 4. Build the macOS DMG
-```bash
-pnpm run dist:desktop
-```
-Compiles `@samvidhan/web` into static assets, packages it with Electron, and generates the installer at `apps/desktop/dist/Samvidhan-1.0.0-arm64.dmg`.
-
----
-
-## 🧪 Testing
-
-Run all unit tests and backend integration tests:
-```bash
-pnpm test
-```
-
-Run bot simulation (spawn 20 bots in room `XYZ123`):
-```bash
-pnpm --filter @samvidhan/server bots XYZ123 20
-```
-
----
-
-## 🎨 Design System: "Printed Civic Document"
-
-- **Typography**: Young Serif (headings & numerals), Newsreader (legal text & explanations), IBM Plex Sans (UI & buttons), IBM Plex Mono (article numbers & timers).
-- **Palette**: Paper Parchment (`#F3ECDD`), Deep Ink (`#16213A`), Legislature Saffron (`#D9731A`), Judiciary Green (`#1E6B49`), Chakra Navy (`#243B8C`).
-- **Tactile Styling**: 2px ink borders, 3px hard offset shadows (no blur), rubber-stamp press physics, 24-spoke Ashoka Chakra, and synthesized mechanical sound effects.
+| Action | Command |
+|---|---|
+| **Run Web App locally** | `pnpm run dev:web` *(http://localhost:5173)* |
+| **Run Backend locally** | `pnpm run dev:server` *(http://localhost:3001)* |
+| **Run Electron Desktop app** | `pnpm run dev:desktop` |
+| **Build macOS DMG installer**| `pnpm run dist:desktop` |
+| **Run all automated tests** | `pnpm test` |
+| **Spawn 20 test bots in room** | `pnpm --filter @samvidhan/server bots <CODE> 20` |

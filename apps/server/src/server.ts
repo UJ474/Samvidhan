@@ -7,6 +7,9 @@ import {
   RoomJoinPayloadSchema,
   AnswerSubmitPayloadSchema,
 } from '@samvidhan/protocol';
+import path from 'path';
+import fs from 'fs';
+import fastifyStatic from '@fastify/static';
 import { GameRoom, generateRoomCode, generateToken } from './room.js';
 
 export async function createServer() {
@@ -25,6 +28,18 @@ export async function createServer() {
       time: new Date().toISOString(),
     };
   });
+
+  const webDistPath = path.join(import.meta.dirname, '../../web/dist');
+  if (fs.existsSync(webDistPath)) {
+    await app.register(fastifyStatic, {
+      root: webDistPath,
+      prefix: '/',
+    });
+
+    app.setNotFoundHandler((_req, reply) => {
+      reply.sendFile('index.html');
+    });
+  }
 
   const io = new SocketIOServer(app.server, {
     cors: {

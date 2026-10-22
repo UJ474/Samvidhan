@@ -1,10 +1,19 @@
 import { io, type Socket } from 'socket.io-client';
 
-const SERVER_URL =
-  import.meta.env.VITE_SERVER_URL ||
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-    ? 'http://localhost:3001'
-    : window.location.origin);
+export function resolveServerUrl(): string {
+  if (typeof window !== 'undefined') {
+    const custom = window.localStorage.getItem('samvidhan_server_url');
+    if (custom) return custom;
+
+    if (window.location.protocol === 'file:' || window.location.hostname === 'localhost') {
+      return 'http://localhost:3001';
+    }
+    return window.location.origin;
+  }
+  return import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
+}
+
+const SERVER_URL = resolveServerUrl();
 
 let socketInstance: Socket | null = null;
 

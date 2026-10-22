@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^10.0.2",
+    "@fastify/static": "^10.1.6",
     "@samvidhan/core": "workspace:*",
     "@samvidhan/protocol": "workspace:*",
     "fastify": "^5.2.1",
