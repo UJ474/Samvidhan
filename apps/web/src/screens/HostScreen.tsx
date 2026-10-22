@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import { getSocket } from '../services/socket.js';
+import { getSocket, getServerUrl, setServerUrl } from '../services/socket.js';
 import {
   SOCKET_EVENTS,
   type QuizSchema,
@@ -30,6 +30,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   const [secondsPerQuestion, setSecondsPerQuestion] = useState<number>(20);
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<string[]>([]);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [serverUrl, setServerUrlState] = useState<string>(() => getServerUrl());
 
   // Host Session State
   const [roomCreated, setRoomCreated] = useState<RoomCreatedPayload | null>(null);
@@ -44,23 +45,26 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
 
   const socket = getSocket();
 
+  const generateQrCode = async (baseUrl: string, code: string) => {
+    const clean = baseUrl.trim().replace(/\/$/, '');
+    const joinUrl = `${clean}/join/${code}`;
+    try {
+      const url = await QRCode.toDataURL(joinUrl, {
+        width: 320,
+        margin: 1.5,
+        color: { dark: '#16213A', light: '#FBF7EE' },
+      });
+      setQrCodeDataUrl(url);
+    } catch {}
+  };
+
   // Socket event subscriptions
   useEffect(() => {
     socket.on(SOCKET_EVENTS.ROOM_CREATED, async (payload: RoomCreatedPayload) => {
       setRoomCreated(payload);
       setPhase('LOBBY');
       sounds.playWheelLand();
-
-      // Generate large QR code for projector view
-      const joinUrl = `${window.location.origin}/join/${payload.code}`;
-      try {
-        const url = await QRCode.toDataURL(joinUrl, {
-          width: 320,
-          margin: 1.5,
-          color: { dark: '#16213A', light: '#FBF7EE' },
-        });
-        setQrCodeDataUrl(url);
-      } catch {}
+      await generateQrCode(serverUrl, payload.code);
     });
 
     socket.on(SOCKET_EVENTS.LOBBY_UPDATE, (payload: LobbyUpdatePayload) => {
@@ -210,6 +214,44 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
         </p>
 
         <div className="civic-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {/* Server URL Input */}
+          <div style={{ backgroundColor: '#FBF7EE', border: '2px solid #243B8C', padding: '1.25rem', borderRadius: 6 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: '#243B8C' }}>
+                🌐 BACKEND SERVER &amp; PUBLIC JOIN URL
+              </label>
+              {(serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1')) && (
+                <span style={{ fontSize: '0.75rem', backgroundColor: '#FFF3CD', color: '#856404', padding: '0.2rem 0.5rem', borderRadius: 4, fontWeight: 700 }}>
+                  ⚠️ Localhost (Phone scan won't work)
+                </span>
+              )}
+            </div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginBottom: '0.5rem' }}>
+              For mobile players to scan the QR code and join, enter your live Render URL (e.g. <code>https://samvidhan.onrender.com</code>):
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input
+                type="text"
+                value={serverUrl}
+                onChange={(e) => {
+                  setServerUrlState(e.target.value);
+                  setServerUrl(e.target.value);
+                }}
+                placeholder="https://samvidhan.onrender.com"
+                style={{
+                  flex: 1,
+                  padding: '0.65rem 0.85rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.95rem',
+                  border: '1.5px solid var(--color-ink)',
+                  borderRadius: 4,
+                  backgroundColor: '#FFFFFF',
+                  color: 'var(--color-ink)',
+                }}
+              />
+            </div>
+          </div>
+
           <div>
             <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.4rem' }}>
               SESSION TITLE
@@ -332,11 +374,27 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
               textAlign: 'center',
             }}
           >
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 700, color: '#D9731A', letterSpacing: '2px' }}>
-              JOIN AT {window.location.host.toUpperCase()}
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: '#D9731A', letterSpacing: '1px' }}>
+              OPEN ON YOUR PHONE BROWSER:
             </div>
-            <div style={{ fontSize: '0.9rem', color: 'var(--color-ink-soft)', margin: '0.5rem 0' }}>
-              Enter Room Code on your phone:
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '1.05rem',
+                fontWeight: 700,
+                color: '#243B8C',
+                wordBreak: 'break-all',
+                margin: '0.5rem 0',
+                padding: '0.4rem 0.8rem',
+                backgroundColor: '#FBF7EE',
+                border: '1px solid #243B8C',
+                borderRadius: 4,
+              }}
+            >
+              {serverUrl.replace(/\/$/, '')}/join/{roomCreated.code}
+            </div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginTop: '0.5rem' }}>
+              Or enter Room Code on website:
             </div>
             <div
               className="font-display"
@@ -368,24 +426,57 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '2rem',
+              padding: '1.5rem',
               textAlign: 'center',
             }}
           >
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.75rem' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.5rem' }}>
               SCAN TO JOIN INSTANTLY
             </div>
             {qrCodeDataUrl ? (
               <img
                 src={qrCodeDataUrl}
                 alt="QR Code"
-                style={{ width: 220, height: 220, border: '2px solid #16213A', borderRadius: 6, boxShadow: 'var(--shadow-ink)' }}
+                style={{ width: 200, height: 200, border: '2px solid #16213A', borderRadius: 6, boxShadow: 'var(--shadow-ink)' }}
               />
             ) : (
-              <div style={{ width: 220, height: 220, backgroundColor: 'rgba(0,0,0,0.05)' }} />
+              <div style={{ width: 200, height: 200, backgroundColor: 'rgba(0,0,0,0.05)' }} />
             )}
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginTop: '0.75rem' }}>
-              Works with any mobile browser camera
+
+            {/* In-place URL updater if it's localhost or needs change */}
+            <div style={{ marginTop: '0.75rem', width: '100%', maxWidth: 300 }}>
+              {(serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1')) && (
+                <div style={{ fontSize: '0.75rem', color: '#856404', backgroundColor: '#FFF3CD', border: '1px solid #856404', borderRadius: 4, padding: '0.35rem 0.5rem', marginBottom: '0.5rem', textAlign: 'left' }}>
+                  ⚠️ QR currently contains localhost. Enter your Render backend URL below so mobile phones can connect:
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '0.3rem' }}>
+                <input
+                  type="text"
+                  value={serverUrl}
+                  onChange={(e) => setServerUrlState(e.target.value)}
+                  placeholder="https://samvidhan.onrender.com"
+                  style={{
+                    flex: 1,
+                    padding: '0.3rem 0.5rem',
+                    fontSize: '0.75rem',
+                    fontFamily: 'var(--font-mono)',
+                    border: '1px solid var(--color-ink)',
+                    borderRadius: 4,
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setServerUrl(serverUrl);
+                    generateQrCode(serverUrl, roomCreated.code);
+                  }}
+                  className="civic-btn"
+                  style={{ padding: '0.2rem 0.5rem', fontSize: '0.75rem' }}
+                >
+                  Update QR
+                </button>
+              </div>
             </div>
           </div>
         </div>

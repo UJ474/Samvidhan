@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Chakra } from '../components/Chakra.js';
 import { storage } from '../services/storage.js';
+import { getServerUrl } from '../services/socket.js';
 
 interface HomeScreenProps {
   onSelectScreen: (screen: string) => void;
@@ -8,6 +9,7 @@ interface HomeScreenProps {
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ onSelectScreen }) => {
   const stats = storage.getStats();
+  const [serverUrl] = useState(() => getServerUrl());
 
   const modes = [
     {
@@ -54,16 +56,71 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onSelectScreen }) => {
 
   return (
     <div className="container-civic" style={{ maxWidth: 840 }}>
+      {/* Top Universal Bar: Quick access to Profile and Server Settings */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0.75rem 0',
+          marginBottom: '0.75rem',
+          borderBottom: '1px solid rgba(0,0,0,0.1)',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-soft)', fontWeight: 700 }}>
+            BACKEND:
+          </span>
+          <button
+            onClick={() => onSelectScreen('profile')}
+            style={{
+              fontSize: '0.75rem',
+              fontFamily: 'var(--font-mono)',
+              padding: '0.2rem 0.6rem',
+              backgroundColor: 'var(--color-surface)',
+              border: '1.5px solid var(--color-ink)',
+              borderRadius: 4,
+              cursor: 'pointer',
+              color: '#243B8C',
+              fontWeight: 600,
+            }}
+            title="Click to view or change Server URL"
+          >
+            {serverUrl} ✏️
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button
+            onClick={() => onSelectScreen('profile')}
+            className="civic-btn"
+            style={{ padding: '0.35rem 0.85rem', fontSize: '0.85rem', fontWeight: 600 }}
+          >
+            👤 Profile &amp; Stats
+          </button>
+          <button
+            onClick={() => onSelectScreen('profile')}
+            className="civic-btn"
+            style={{ padding: '0.35rem 0.85rem', fontSize: '0.85rem' }}
+          >
+            ⚙️ Server Settings
+          </button>
+        </div>
+      </div>
+
       {/* Header Banner */}
       <header
         style={{
           textAlign: 'center',
-          padding: '2rem 1rem 1.5rem',
+          padding: '1.5rem 1rem 1.5rem',
           borderBottom: '2px dashed var(--color-ink)',
           marginBottom: '2rem',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+
           <Chakra size={44} spinning />
           <h1 className="font-display" style={{ fontSize: '2.5rem', letterSpacing: '0.05em', color: 'var(--color-ink)' }}>
             SAMVIDHAN

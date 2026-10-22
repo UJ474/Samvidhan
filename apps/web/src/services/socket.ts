@@ -3,7 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 export function resolveServerUrl(): string {
   if (typeof window !== 'undefined') {
     const custom = window.localStorage.getItem('samvidhan_server_url');
-    if (custom) return custom;
+    if (custom) return custom.trim().replace(/\/$/, '');
 
     if (window.location.protocol === 'file:' || window.location.hostname === 'localhost') {
       return 'http://localhost:3001';
@@ -13,13 +13,28 @@ export function resolveServerUrl(): string {
   return import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
 }
 
-const SERVER_URL = resolveServerUrl();
+export function getServerUrl(): string {
+  return resolveServerUrl();
+}
+
+export function setServerUrl(url: string): void {
+  if (typeof window !== 'undefined') {
+    const cleaned = url.trim().replace(/\/$/, '');
+    if (cleaned) {
+      window.localStorage.setItem('samvidhan_server_url', cleaned);
+    } else {
+      window.localStorage.removeItem('samvidhan_server_url');
+    }
+    resetSocket();
+  }
+}
 
 let socketInstance: Socket | null = null;
 
 export function getSocket(): Socket {
   if (!socketInstance) {
-    socketInstance = io(SERVER_URL, {
+    const targetUrl = resolveServerUrl();
+    socketInstance = io(targetUrl, {
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: 10,
@@ -36,3 +51,4 @@ export function resetSocket(): void {
     socketInstance = null;
   }
 }
+
