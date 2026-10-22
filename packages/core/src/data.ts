@@ -1,0 +1,1205 @@
+import type { Article, Organ, Question } from './types.js';
+import { ORGANS } from './wheel.js';
+
+export const ARTICLES: Article[] = [
+  {
+    "id": "art-52",
+    "article": "52",
+    "part": "V",
+    "organ": "Executive",
+    "title": "The President of India",
+    "simple": "India will have a President. The President is the head of the country.",
+    "questions": [
+      {
+        "id": "art-52-q1",
+        "q": "Who is the head of the Indian State?",
+        "options": [
+          "Prime Minister",
+          "President",
+          "Chief Justice"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-52-q2",
+        "q": "Which Article states that there shall be a President of India?",
+        "options": [
+          "Article 52",
+          "Article 54",
+          "Article 74",
+          "Article 356"
+        ],
+        "answer": 0,
+        "needsReview": true
+      },
+      {
+        "id": "art-52-q3",
+        "q": "Who is the formal constitutional head of the Republic of India?",
+        "options": [
+          "The Prime Minister",
+          "The President",
+          "The Chief Justice",
+          "The Speaker"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-54",
+    "article": "54",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Election of the President",
+    "simple": "The President is chosen by elected MPs of both Houses of Parliament and elected MLAs of the States (and Delhi & Puducherry). Citizens do not vote directly.",
+    "questions": [
+      {
+        "id": "art-54-q1",
+        "q": "Do citizens directly vote to elect the President?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-54-q2",
+        "q": "Who among the following does NOT vote in the Presidential election?",
+        "options": [
+          "Elected MPs of Lok Sabha",
+          "Elected MLAs of States",
+          "Nominated members of Parliament",
+          "Elected MLAs of Delhi"
+        ],
+        "answer": 2,
+        "needsReview": true
+      },
+      {
+        "id": "art-54-q3",
+        "q": "Which union territories participate in the election of the President?",
+        "options": [
+          "Only Delhi",
+          "Delhi and Puducherry",
+          "Chandigarh and Ladakh",
+          "All Union Territories"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-56",
+    "article": "56",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Term of the President",
+    "simple": "The President holds office for 5 years.",
+    "questions": [
+      {
+        "id": "art-56-q1",
+        "q": "What is the term of the President?",
+        "options": [
+          "4 years",
+          "5 years",
+          "6 years"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-56-q2",
+        "q": "To whom does the President address their letter of resignation?",
+        "options": [
+          "Prime Minister",
+          "Vice-President",
+          "Chief Justice of India",
+          "Lok Sabha Speaker"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-56-q3",
+        "q": "Can a person be re-elected as President of India after completing a 5-year term?",
+        "options": [
+          "Yes, eligible for re-election",
+          "No, only one term permitted",
+          "Only after a 5-year break",
+          "Only with Supreme Court approval"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-58",
+    "article": "58",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Who can become President",
+    "simple": "To become President you must be a citizen of India, at least 35 years old, and qualified to be a Lok Sabha member.",
+    "questions": [
+      {
+        "id": "art-58-q1",
+        "q": "Minimum age to become President?",
+        "options": [
+          "25",
+          "30",
+          "35"
+        ],
+        "answer": 2,
+        "needsReview": false
+      },
+      {
+        "id": "art-58-q2",
+        "q": "To qualify as President, a candidate must be qualified for election as a member of which body?",
+        "options": [
+          "Rajya Sabha",
+          "Lok Sabha",
+          "State Legislative Assembly",
+          "NITI Aayog"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-58-q3",
+        "q": "Which citizenship requirement is set for the President of India?",
+        "options": [
+          "Citizen by birth only",
+          "Citizen of India",
+          "Citizen residing in India for 20 years",
+          "Any Commonwealth citizen"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-61",
+    "article": "61",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Impeachment of the President",
+    "simple": "Parliament can remove the President for violating the Constitution through a process called impeachment.",
+    "questions": [
+      {
+        "id": "art-61-q1",
+        "q": "The process to remove the President is called?",
+        "options": [
+          "Impeachment",
+          "Ordinance",
+          "Writ"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-61-q2",
+        "q": "On what sole ground can the President of India be impeached under Article 61?",
+        "options": [
+          "Misbehaviour",
+          "Violation of the Constitution",
+          "Incapacity",
+          "Insolvency"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-61-q3",
+        "q": "In which House of Parliament can an impeachment charge against the President be initiated?",
+        "options": [
+          "Only Lok Sabha",
+          "Only Rajya Sabha",
+          "Either House of Parliament",
+          "Supreme Court only"
+        ],
+        "answer": 2,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-72",
+    "article": "72",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Pardoning power of the President",
+    "simple": "The President can pardon, reduce or suspend the punishment of a convicted person, including a death sentence.",
+    "questions": [
+      {
+        "id": "art-72-q1",
+        "q": "Which Article gives the President power to pardon?",
+        "options": [
+          "Article 72",
+          "Article 110",
+          "Article 226"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-72-q2",
+        "q": "Does the President have the power to grant pardon in cases of punishment by a Court Martial?",
+        "options": [
+          "Yes",
+          "No",
+          "Only with Prime Minister consent",
+          "Only in peacetime"
+        ],
+        "answer": 0,
+        "needsReview": true
+      },
+      {
+        "id": "art-72-q3",
+        "q": "The power to commute or pardon a sentence of death is exclusively vested in:",
+        "options": [
+          "The President",
+          "The Governor",
+          "The Chief Justice",
+          "The Law Minister"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-74-75",
+    "article": "74-75",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Prime Minister and Council of Ministers",
+    "simple": "A Council of Ministers headed by the Prime Minister advises the President. The President appoints the PM, and the ministers are together answerable to the Lok Sabha.",
+    "questions": [
+      {
+        "id": "art-74-75-q1",
+        "q": "The Council of Ministers is collectively responsible to?",
+        "options": [
+          "Rajya Sabha",
+          "Lok Sabha",
+          "Supreme Court"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-74-75-q2",
+        "q": "Who advises the President in the exercise of constitutional functions?",
+        "options": [
+          "Supreme Court",
+          "Council of Ministers headed by the Prime Minister",
+          "Cabinet Secretary",
+          "Governor of RBI"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-74-75-q3",
+        "q": "Ministers hold office during the pleasure of whom?",
+        "options": [
+          "The Prime Minister",
+          "The President",
+          "The Speaker",
+          "The Parliament"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-76",
+    "article": "76",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Attorney General of India",
+    "simple": "The Attorney General is the top lawyer of the Government of India and gives it legal advice.",
+    "questions": [
+      {
+        "id": "art-76-q1",
+        "q": "Who is the chief legal adviser to the Government of India?",
+        "options": [
+          "Attorney General",
+          "CAG",
+          "Speaker"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-76-q2",
+        "q": "Who appoints the Attorney General of India under Article 76?",
+        "options": [
+          "Chief Justice of India",
+          "The President",
+          "Prime Minister",
+          "Parliament"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-76-q3",
+        "q": "Does the Attorney General have the right to speak in both Houses of Parliament?",
+        "options": [
+          "Yes, but without the right to vote",
+          "Yes, with voting rights",
+          "No, not allowed in Parliament",
+          "Only in Lok Sabha"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-79",
+    "article": "79",
+    "part": "V",
+    "organ": "Legislature",
+    "title": "Parliament",
+    "simple": "Parliament is made of three parts: the President, the Rajya Sabha (Council of States) and the Lok Sabha (House of the People).",
+    "questions": [
+      {
+        "id": "art-79-q1",
+        "q": "Is the President a part of Parliament?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-79-q2",
+        "q": "How many constituent parts form the Parliament of India?",
+        "options": [
+          "Two (Lok Sabha and Rajya Sabha)",
+          "Three (President, Rajya Sabha, Lok Sabha)",
+          "Four (President, PM, Lok Sabha, Rajya Sabha)",
+          "One (Parliamentary Assembly)"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-79-q3",
+        "q": "What is the upper house of the Indian Parliament officially called in the Constitution?",
+        "options": [
+          "House of the People",
+          "Council of States",
+          "Legislative Council",
+          "Senate"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-80",
+    "article": "80",
+    "part": "V",
+    "organ": "Legislature",
+    "title": "Rajya Sabha",
+    "simple": "Rajya Sabha can have up to 250 members. 12 are nominated by the President for their knowledge of art, science, literature or social service.",
+    "questions": [
+      {
+        "id": "art-80-q1",
+        "q": "How many Rajya Sabha members are nominated by the President?",
+        "options": [
+          "2",
+          "12",
+          "20"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-80-q2",
+        "q": "Which field is NOT one of the criteria for President nominations to Rajya Sabha under Article 80?",
+        "options": [
+          "Literature",
+          "Science",
+          "Social Service",
+          "Politics"
+        ],
+        "answer": 3,
+        "needsReview": true
+      },
+      {
+        "id": "art-80-q3",
+        "q": "What is the maximum constitutional strength of the Rajya Sabha?",
+        "options": [
+          "245 members",
+          "250 members",
+          "300 members",
+          "543 members"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-83",
+    "article": "83",
+    "part": "V",
+    "organ": "Legislature",
+    "title": "Duration of the Houses",
+    "simple": "Lok Sabha lasts 5 years unless dissolved earlier. Rajya Sabha is never dissolved; one-third of its members retire every 2 years.",
+    "questions": [
+      {
+        "id": "art-83-q1",
+        "q": "Which House can never be dissolved?",
+        "options": [
+          "Lok Sabha",
+          "Rajya Sabha"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-83-q2",
+        "q": "What fraction of Rajya Sabha members retire every two years?",
+        "options": [
+          "One-half",
+          "One-third",
+          "One-fourth",
+          "One-fifth"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-83-q3",
+        "q": "What is the normal duration of the Lok Sabha from the date of its first meeting?",
+        "options": [
+          "4 years",
+          "5 years",
+          "6 years",
+          "Permanent"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-109-110",
+    "article": "109-110",
+    "part": "V",
+    "organ": "Legislature",
+    "title": "Money Bills",
+    "simple": "A Money Bill (about taxes and government money) can only be introduced in the Lok Sabha. Rajya Sabha can only suggest changes within 14 days.",
+    "questions": [
+      {
+        "id": "art-109-110-q1",
+        "q": "Where can a Money Bill be introduced?",
+        "options": [
+          "Only Lok Sabha",
+          "Only Rajya Sabha",
+          "Either House"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-109-110-q2",
+        "q": "Within how many days must Rajya Sabha return a Money Bill to Lok Sabha?",
+        "options": [
+          "7 days",
+          "14 days",
+          "30 days",
+          "6 months"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-109-110-q3",
+        "q": "Who decides definitively whether a bill is a Money Bill or not?",
+        "options": [
+          "Finance Minister",
+          "Speaker of the Lok Sabha",
+          "Chairman of Rajya Sabha",
+          "President"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-108",
+    "article": "108",
+    "part": "V",
+    "organ": "Legislature",
+    "title": "Joint Sitting",
+    "simple": "If the two Houses disagree on an ordinary bill, the President can call both Houses to meet together and vote.",
+    "questions": [
+      {
+        "id": "art-108-q1",
+        "q": "Who calls a joint sitting of Parliament?",
+        "options": [
+          "Prime Minister",
+          "President",
+          "Chief Justice"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-108-q2",
+        "q": "Who presides over a Joint Sitting of both Houses of Parliament?",
+        "options": [
+          "The President",
+          "Chairman of Rajya Sabha",
+          "Speaker of the Lok Sabha",
+          "Prime Minister"
+        ],
+        "answer": 2,
+        "needsReview": true
+      },
+      {
+        "id": "art-108-q3",
+        "q": "Can a Joint Sitting be called for a Money Bill?",
+        "options": [
+          "Yes",
+          "No, Money Bills have no joint sitting",
+          "Only if Rajya Sabha rejects it",
+          "With Chief Justice approval"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-123",
+    "article": "123",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Ordinances",
+    "simple": "When Parliament is not in session, the President can make a temporary law called an Ordinance if urgently needed.",
+    "questions": [
+      {
+        "id": "art-123-q1",
+        "q": "A temporary law made by the President when Parliament is not in session is?",
+        "options": [
+          "Ordinance",
+          "Money Bill",
+          "Writ"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-123-q2",
+        "q": "An Ordinance promulgated by the President must be approved by Parliament within how long after reassembly?",
+        "options": [
+          "2 weeks",
+          "6 weeks",
+          "6 months",
+          "1 year"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-123-q3",
+        "q": "Under what primary condition can the President promulgate an Ordinance?",
+        "options": [
+          "Both Houses are in session",
+          "At least one House is not in session and immediate action is required",
+          "Supreme Court directs it",
+          "Only during war"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-124",
+    "article": "124",
+    "part": "V",
+    "organ": "Judiciary",
+    "title": "Supreme Court",
+    "simple": "India has a Supreme Court with a Chief Justice and other judges. Supreme Court judges retire at 65.",
+    "questions": [
+      {
+        "id": "art-124-q1",
+        "q": "Retirement age of a Supreme Court judge?",
+        "options": [
+          "60",
+          "62",
+          "65"
+        ],
+        "answer": 2,
+        "needsReview": false
+      },
+      {
+        "id": "art-124-q2",
+        "q": "Who appoints the judges of the Supreme Court of India?",
+        "options": [
+          "The President",
+          "The Prime Minister",
+          "Law Commission",
+          "Parliament"
+        ],
+        "answer": 0,
+        "needsReview": true
+      },
+      {
+        "id": "art-124-q3",
+        "q": "Where is the principal seat of the Supreme Court of India established by Article 130?",
+        "options": [
+          "Mumbai",
+          "Delhi",
+          "Kolkata",
+          "Chennai"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-141",
+    "article": "141",
+    "part": "V",
+    "organ": "Judiciary",
+    "title": "Supreme Court decisions bind all courts",
+    "simple": "The law declared by the Supreme Court must be followed by all courts in India.",
+    "questions": [
+      {
+        "id": "art-141-q1",
+        "q": "Supreme Court judgments are binding on?",
+        "options": [
+          "Only High Courts",
+          "All courts in India"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-141-q2",
+        "q": "According to Article 141, the law declared by Supreme Court is binding on:",
+        "options": [
+          "Only the Union Government",
+          "All courts within the territory of India",
+          "Only appellate courts",
+          "Only subordinate courts"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-141-q3",
+        "q": "The principle of binding precedent under Article 141 is based on which legal doctrine?",
+        "options": [
+          "Stare decisis",
+          "Ultra vires",
+          "Habeas corpus",
+          "Locus standi"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-143",
+    "article": "143",
+    "part": "V",
+    "organ": "Judiciary",
+    "title": "Advisory opinion",
+    "simple": "The President can ask the Supreme Court for its opinion on an important question of law or fact.",
+    "questions": [
+      {
+        "id": "art-143-q1",
+        "q": "Who can seek the Supreme Court's advisory opinion?",
+        "options": [
+          "President",
+          "Any citizen",
+          "Governor"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-143-q2",
+        "q": "Is the advisory opinion given by the Supreme Court under Article 143 binding on the President?",
+        "options": [
+          "Yes, mandatory",
+          "No, it is advisory in nature",
+          "Binding only on criminal questions",
+          "Binding if approved by Cabinet"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-143-q3",
+        "q": "Under Article 143, on what matters can the President consult the Supreme Court?",
+        "options": [
+          "Questions of law or fact of public importance",
+          "Personal property disputes",
+          "Electoral campaigning budgets",
+          "Military troop deployments"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-148",
+    "article": "148",
+    "part": "V",
+    "organ": "Executive",
+    "title": "Comptroller and Auditor General (CAG)",
+    "simple": "The CAG checks (audits) how the government spends public money.",
+    "questions": [
+      {
+        "id": "art-148-q1",
+        "q": "Who audits government spending?",
+        "options": [
+          "Attorney General",
+          "CAG",
+          "Speaker"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-148-q2",
+        "q": "Who appoints the Comptroller and Auditor General (CAG) of India?",
+        "options": [
+          "Finance Minister",
+          "Public Accounts Committee",
+          "The President",
+          "Chief Justice"
+        ],
+        "answer": 2,
+        "needsReview": true
+      },
+      {
+        "id": "art-148-q3",
+        "q": "To whom does the CAG submit audit reports relating to the accounts of the Union?",
+        "options": [
+          "The President",
+          "The Prime Minister",
+          "Lok Sabha Speaker",
+          "Finance Secretary"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-153-155",
+    "article": "153-155",
+    "part": "VI",
+    "organ": "Executive",
+    "title": "Governor of a State",
+    "simple": "Each State has a Governor, appointed by the President.",
+    "questions": [
+      {
+        "id": "art-153-155-q1",
+        "q": "Who appoints the Governor?",
+        "options": [
+          "Chief Minister",
+          "President",
+          "People"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-153-155-q2",
+        "q": "Can the same person be appointed as Governor for two or more States?",
+        "options": [
+          "Yes, permitted by constitutional amendment",
+          "No, never permitted",
+          "Only with Parliament 2/3 majority",
+          "Only for union territories"
+        ],
+        "answer": 0,
+        "needsReview": true
+      },
+      {
+        "id": "art-153-155-q3",
+        "q": "What is the minimum age required to be appointed as Governor of a State?",
+        "options": [
+          "25 years",
+          "30 years",
+          "35 years",
+          "40 years"
+        ],
+        "answer": 2,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-161",
+    "article": "161",
+    "part": "VI",
+    "organ": "Executive",
+    "title": "Pardoning power of the Governor",
+    "simple": "The Governor can pardon or reduce punishments for offences against State laws (but cannot pardon a death sentence).",
+    "questions": [
+      {
+        "id": "art-161-q1",
+        "q": "Can a Governor pardon a death sentence?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-161-q2",
+        "q": "Can a Governor pardon a sentence of death given under state law?",
+        "options": [
+          "Yes",
+          "No, only the President has death sentence pardoning power",
+          "Yes, with High Court concurrence",
+          "Yes, in tribal areas"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-161-q3",
+        "q": "The pardoning power of the Governor under Article 161 extends to matters related to:",
+        "options": [
+          "Executive power of the State",
+          "Union laws only",
+          "Martial law",
+          "International treaties"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-163-164",
+    "article": "163-164",
+    "part": "VI",
+    "organ": "Executive",
+    "title": "Chief Minister and State Ministers",
+    "simple": "The Governor appoints the Chief Minister. The CM leads the State Council of Ministers, which is responsible to the Legislative Assembly.",
+    "questions": [
+      {
+        "id": "art-163-164-q1",
+        "q": "Who appoints the Chief Minister?",
+        "options": [
+          "President",
+          "Governor",
+          "Prime Minister"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-163-164-q2",
+        "q": "The State Council of Ministers is collectively responsible to:",
+        "options": [
+          "The Governor",
+          "The Legislative Assembly of the State",
+          "The Legislative Council",
+          "The High Court"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-163-164-q3",
+        "q": "Who appoints other State ministers on the advice of the Chief Minister?",
+        "options": [
+          "The Governor",
+          "The Chief Minister directly",
+          "The President",
+          "The Assembly Speaker"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-165",
+    "article": "165",
+    "part": "VI",
+    "organ": "Executive",
+    "title": "Advocate General of a State",
+    "simple": "The Advocate General is the top lawyer of a State Government.",
+    "questions": [
+      {
+        "id": "art-165-q1",
+        "q": "The State's top legal officer is called?",
+        "options": [
+          "Attorney General",
+          "Advocate General"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-165-q2",
+        "q": "Who appoints the Advocate General for each State under Article 165?",
+        "options": [
+          "Chief Minister",
+          "The Governor",
+          "Chief Justice of High Court",
+          "President"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-165-q3",
+        "q": "A person qualified to be appointed as Advocate General must be qualified to be a judge of:",
+        "options": [
+          "Supreme Court",
+          "High Court",
+          "District Court",
+          "Sessions Court"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-168-170",
+    "article": "168-170",
+    "part": "VI",
+    "organ": "Legislature",
+    "title": "State Legislature",
+    "simple": "Each State has a Legislature with the Governor and a Legislative Assembly (some also have a Legislative Council). An Assembly has between 60 and 500 members.",
+    "questions": [
+      {
+        "id": "art-168-170-q1",
+        "q": "Maximum members in a State Legislative Assembly?",
+        "options": [
+          "250",
+          "500",
+          "550"
+        ],
+        "answer": 1,
+        "needsReview": false
+      },
+      {
+        "id": "art-168-170-q2",
+        "q": "What is the minimum number of members in a State Legislative Assembly as per Article 170 (subject to exceptions)?",
+        "options": [
+          "40",
+          "50",
+          "60",
+          "80"
+        ],
+        "answer": 2,
+        "needsReview": true
+      },
+      {
+        "id": "art-168-170-q3",
+        "q": "What is the upper house of a State Legislature called where it exists?",
+        "options": [
+          "Legislative Assembly",
+          "Legislative Council (Vidhan Parishad)",
+          "State Senate",
+          "Board of Ministers"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-214-217",
+    "article": "214 & 217",
+    "part": "VI",
+    "organ": "Judiciary",
+    "title": "High Courts",
+    "simple": "Each State has a High Court. High Court judges retire at 62.",
+    "questions": [
+      {
+        "id": "art-214-217-q1",
+        "q": "Retirement age of a High Court judge?",
+        "options": [
+          "62",
+          "65",
+          "70"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-214-217-q2",
+        "q": "Who appoints the Chief Justice and judges of a High Court?",
+        "options": [
+          "The Governor",
+          "The President",
+          "Chief Minister",
+          "State Bar Council"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-214-217-q3",
+        "q": "To whom does a High Court judge address their resignation letter?",
+        "options": [
+          "The Governor",
+          "The Chief Justice of High Court",
+          "The President",
+          "The Law Minister"
+        ],
+        "answer": 2,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-226",
+    "article": "226",
+    "part": "VI",
+    "organ": "Judiciary",
+    "title": "Writ power of High Courts",
+    "simple": "High Courts can issue orders called writs to protect your Fundamental Rights and other legal rights.",
+    "questions": [
+      {
+        "id": "art-226-q1",
+        "q": "Which Article lets High Courts issue writs?",
+        "options": [
+          "Article 72",
+          "Article 123",
+          "Article 226"
+        ],
+        "answer": 2,
+        "needsReview": false
+      },
+      {
+        "id": "art-226-q2",
+        "q": "Which court has writ jurisdiction under Article 226 of the Constitution?",
+        "options": [
+          "Supreme Court only",
+          "High Courts",
+          "District Courts",
+          "Tribunals only"
+        ],
+        "answer": 1,
+        "needsReview": true
+      },
+      {
+        "id": "art-226-q3",
+        "q": "Article 226 writ powers can be issued for Fundamental Rights and:",
+        "options": [
+          "For any other legal right",
+          "Only for tax matters",
+          "Only for election petitions",
+          "Only for criminal bail"
+        ],
+        "answer": 0,
+        "needsReview": true
+      }
+    ]
+  },
+  {
+    "id": "art-233",
+    "article": "233",
+    "part": "VI",
+    "organ": "Judiciary",
+    "title": "District Judges",
+    "simple": "District Judges are appointed by the Governor in consultation with the High Court.",
+    "questions": [
+      {
+        "id": "art-233-q1",
+        "q": "Who appoints District Judges?",
+        "options": [
+          "Governor",
+          "Chief Minister",
+          "President"
+        ],
+        "answer": 0,
+        "needsReview": false
+      },
+      {
+        "id": "art-233-q2",
+        "q": "District judges in any State are appointed by the Governor in consultation with:",
+        "options": [
+          "The High Court",
+          "The Supreme Court",
+          "The Chief Minister",
+          "The Law Commission"
+        ],
+        "answer": 0,
+        "needsReview": true
+      },
+      {
+        "id": "art-233-q3",
+        "q": "Subordinate courts in a State are placed under the administrative control of:",
+        "options": [
+          "State Government",
+          "The High Court",
+          "District Magistrate",
+          "Ministry of Law"
+        ],
+        "answer": 1,
+        "needsReview": true
+      }
+    ]
+  }
+];
+
+export function getAllArticles(): Article[] {
+  return ARTICLES;
+}
+
+export function getArticleById(id: string): Article | undefined {
+  return ARTICLES.find((a) => a.id === id);
+}
+
+export function getArticlesByOrgan(organ: Organ): Article[] {
+  return ARTICLES.filter((a) => a.organ === organ);
+}
+
+export function getAllQuestions(): Array<{ article: Article; question: Question }> {
+  const result: Array<{ article: Article; question: Question }> = [];
+  for (const article of ARTICLES) {
+    for (const question of article.questions) {
+      result.push({ article, question });
+    }
+  }
+  return result;
+}
+
+export function getRandomQuestions(count = 10): Array<{ article: Article; question: Question }> {
+  const all = getAllQuestions();
+  const shuffled = [...all].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+export function getRandomQuestionForOrgan(organ: Organ): { article: Article; question: Question } | undefined {
+  const organArticles = getArticlesByOrgan(organ);
+  if (organArticles.length === 0) return undefined;
+  const article = organArticles[Math.floor(Math.random() * organArticles.length)];
+  const question = article.questions[Math.floor(Math.random() * article.questions.length)];
+  return { article, question };
+}

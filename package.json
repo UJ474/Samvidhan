@@ -1,0 +1,23 @@
+{
+  "name": "samvidhan-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "pnpm --filter @samvidhan/core test && pnpm --filter @samvidhan/server test",
+    "build": "pnpm --filter @samvidhan/core build && pnpm --filter @samvidhan/protocol build && pnpm --filter @samvidhan/web build && pnpm --filter @samvidhan/server build",
+    "dev:web": "pnpm --filter @samvidhan/web dev",
+    "dev:server": "pnpm --filter @samvidhan/server dev",
+    "dev:desktop": "pnpm --filter @samvidhan/desktop dev",
+    "dev": "pnpm --parallel --filter @samvidhan/server --filter @samvidhan/web dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
