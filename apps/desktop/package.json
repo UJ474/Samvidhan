@@ -1,6 +1,8 @@
 {
   "name": "@samvidhan/desktop",
   "version": "1.0.0",
+  "description": "Samvidhan — Interactive Constitution of India App",
+  "author": "Utkarsh Jain",
   "private": true,
   "type": "module",
   "main": "src/main.js",
