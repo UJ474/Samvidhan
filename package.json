@@ -9,6 +9,7 @@
     "dev:web": "pnpm --filter @samvidhan/web dev",
     "dev:server": "pnpm --filter @samvidhan/server dev",
     "dev:desktop": "pnpm --filter @samvidhan/desktop dev",
+    "dist:desktop": "pnpm --filter @samvidhan/web build && pnpm --filter @samvidhan/desktop dist",
     "dev": "pnpm --parallel --filter @samvidhan/server --filter @samvidhan/web dev"
   },
   "devDependencies": {
