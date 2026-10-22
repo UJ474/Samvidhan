@@ -51,6 +51,7 @@ export const SOCKET_EVENTS = {
   WHEEL_SPIN: 'wheel:spin',
   QUESTION_SHOW: 'question:show',
   ANSWER_ACK: 'answer:ack',
+  ANSWER_PROGRESS: 'answer:progress',
   QUESTION_REVEAL: 'question:reveal',
   LEADERBOARD_UPDATE: 'leaderboard:update',
   GAME_FINISHED: 'game:finished',
@@ -145,6 +146,11 @@ export interface AnswerAckPayload {
   locked: boolean;
   questionIndex: number;
   choice: number;
+}
+
+export interface AnswerProgressPayload {
+  answeredCount: number;
+  totalPlayers: number;
 }
 
 export interface QuestionRevealPayload {

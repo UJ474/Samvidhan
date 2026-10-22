@@ -341,6 +341,11 @@ export class GameRoom {
     const answeredCount = Array.from(this.players.values()).filter((p) => p.currentAnswer !== undefined).length;
     const connectedCount = Array.from(this.players.values()).filter((p) => p.isConnected).length;
 
+    this.io.to(this.code).emit(SOCKET_EVENTS.ANSWER_PROGRESS, {
+      answeredCount,
+      totalPlayers: connectedCount,
+    });
+
     // If all connected players have answered, reveal early!
     if (connectedCount > 0 && answeredCount >= connectedCount) {
       if (this.questionTimer) clearTimeout(this.questionTimer);

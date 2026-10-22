@@ -11,6 +11,7 @@ import {
   type LeaderboardUpdatePayload,
   type GameFinishedPayload,
   type WheelSpinPayload,
+  type AnswerProgressPayload,
 } from '@samvidhan/protocol';
 import { getAllArticles, getAllQuestions, type Quiz } from '@samvidhan/core';
 import { SpinningWheel } from '../components/SpinningWheel.js';
@@ -42,6 +43,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardUpdatePayload | null>(null);
   const [finishedData, setFinishedData] = useState<GameFinishedPayload | null>(null);
   const [timerRemaining, setTimerRemaining] = useState<number>(20);
+  const [answerProgress, setAnswerProgress] = useState<{ answeredCount: number; totalPlayers: number }>({ answeredCount: 0, totalPlayers: 0 });
 
   const socket = getSocket();
 
@@ -81,7 +83,13 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
       setCurrentQuestion(payload);
       setPhase('QUESTION');
       setRevealData(null);
+      setAnswerProgress({ answeredCount: payload.answeredCount || 0, totalPlayers: payload.totalPlayers || 0 });
       setTimerRemaining(Math.max(0, Math.ceil((payload.endsAt - Date.now()) / 1000)));
+    });
+
+    socket.on(SOCKET_EVENTS.ANSWER_PROGRESS, (payload: AnswerProgressPayload) => {
+      setAnswerProgress(payload);
+      sounds.playPegTick();
     });
 
     socket.on(SOCKET_EVENTS.QUESTION_REVEAL, (payload: QuestionRevealPayload) => {
@@ -107,6 +115,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
       socket.off(SOCKET_EVENTS.LOBBY_UPDATE);
       socket.off(SOCKET_EVENTS.WHEEL_SPIN);
       socket.off(SOCKET_EVENTS.QUESTION_SHOW);
+      socket.off(SOCKET_EVENTS.ANSWER_PROGRESS);
       socket.off(SOCKET_EVENTS.QUESTION_REVEAL);
       socket.off(SOCKET_EVENTS.LEADERBOARD_UPDATE);
       socket.off(SOCKET_EVENTS.GAME_FINISHED);
@@ -571,6 +580,20 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
           </div>
 
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                backgroundColor: 'var(--color-surface)',
+                border: '2px solid var(--color-ink)',
+                borderRadius: 20,
+                padding: '0.3rem 0.8rem',
+                boxShadow: 'var(--shadow-ink)',
+              }}
+            >
+              👥 Answers: {answerProgress.answeredCount} / {answerProgress.totalPlayers}
+            </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.4rem', fontWeight: 800 }}>
               ⏱ {timerRemaining}s
             </div>
