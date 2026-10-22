@@ -1,0 +1,276 @@
+:root {
+  --color-bg: #F3ECDD;
+  --color-surface: #FBF7EE;
+  --color-surface-elevated: #FFFFFF;
+  --color-ink: #16213A;
+  --color-ink-soft: #4A5470;
+  --color-ink-subtle: #7E8BA8;
+  --color-border: #16213A;
+  --color-legislature: #D9731A;
+  --color-executive: #FBF7EE;
+  --color-judiciary: #1E6B49;
+  --color-chakra: #243B8C;
+  --color-right: #1E6B49;
+  --color-wrong: #B3261E;
+  --color-gold: #B8860B;
+
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-body: 'Newsreader', Garamond, serif;
+  --font-ui: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --border-ink: 2px solid var(--color-ink);
+  --shadow-ink: 3px 3px 0px var(--color-ink);
+  --shadow-ink-lg: 5px 5px 0px var(--color-ink);
+  --shadow-ink-pressed: 1px 1px 0px var(--color-ink);
+  --radius-civic: 5px;
+}
+
+[data-theme='dark'] {
+  --color-bg: #0F1626;
+  --color-surface: #18233B;
+  --color-surface-elevated: #212F4D;
+  --color-ink: #F3ECDD;
+  --color-ink-soft: #B9BFD0;
+  --color-ink-subtle: #6A7592;
+  --color-border: #F3ECDD;
+  --color-legislature: #E88A33;
+  --color-executive: #23304D;
+  --color-judiciary: #3A9B6E;
+  --color-chakra: #7C93E8;
+  --color-right: #3A9B6E;
+  --color-wrong: #E5655C;
+  --color-gold: #E5B13A;
+  --shadow-ink: 3px 3px 0px #F3ECDD;
+  --shadow-ink-lg: 5px 5px 0px #F3ECDD;
+  --shadow-ink-pressed: 1px 1px 0px #F3ECDD;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 4% Subtle Paper Grain Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Typography Utility Classes */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-ui {
+  font-family: var(--font-ui);
+}
+
+/* Civic Tactile Buttons */
+.civic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: var(--border-ink);
+  border-radius: var(--radius-civic);
+  box-shadow: var(--shadow-ink);
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 80ms ease, background-color 150ms ease;
+  user-select: none;
+  text-decoration: none;
+}
+
+.civic-btn:hover {
+  background-color: var(--color-surface-elevated);
+}
+
+.civic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-ink-pressed);
+}
+
+.civic-btn-primary {
+  background-color: var(--color-legislature);
+  color: #FFFFFF;
+}
+
+.civic-btn-primary:hover {
+  background-color: #E88A33;
+}
+
+.civic-btn-judiciary {
+  background-color: var(--color-judiciary);
+  color: #FFFFFF;
+}
+
+.civic-btn-judiciary:hover {
+  background-color: #248259;
+}
+
+.civic-btn-chakra {
+  background-color: var(--color-chakra);
+  color: #FFFFFF;
+}
+
+.civic-btn-chakra:hover {
+  background-color: #334FB8;
+}
+
+/* Civic Containers & Cards */
+.civic-card {
+  background-color: var(--color-surface);
+  border: var(--border-ink);
+  border-radius: var(--radius-civic);
+  box-shadow: var(--shadow-ink);
+  padding: 1.25rem;
+  position: relative;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.civic-card-interactive {
+  cursor: pointer;
+}
+
+.civic-card-interactive:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-ink-lg);
+}
+
+.civic-card-interactive:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-ink-pressed);
+}
+
+/* Ruled Lines for Learn Mode */
+.ruled-lines {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 28px,
+    rgba(22, 33, 58, 0.08) 28px,
+    rgba(22, 33, 58, 0.08) 29px
+  );
+  line-height: 29px;
+}
+
+/* Perforated Ticket Edge for Flash Cards */
+.ticket-perforated {
+  position: relative;
+  border: var(--border-ink);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-civic);
+  box-shadow: var(--shadow-ink);
+}
+
+.ticket-perforated::before,
+.ticket-perforated::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-bg);
+  border: var(--border-ink);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.ticket-perforated::before {
+  left: -10px;
+}
+
+.ticket-perforated::after {
+  right: -10px;
+}
+
+/* Results Stamp Mark */
+.result-stamp {
+  border: 3px double var(--color-ink);
+  border-radius: 50%;
+  padding: 1.5rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-4deg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-ink);
+}
+
+/* Organ Badge Tags */
+.organ-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 3px;
+}
+
+.organ-badge-legislature {
+  background-color: var(--color-legislature);
+  color: #FFFFFF;
+}
+
+.organ-badge-executive {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.organ-badge-judiciary {
+  background-color: var(--color-judiciary);
+  color: #FFFFFF;
+}
+
+/* Responsive Container */
+.container-civic {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Hide scrollbars cleanly */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

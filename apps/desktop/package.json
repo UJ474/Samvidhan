@@ -1,0 +1,29 @@
+{
+  "name": "@samvidhan/desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "echo 'Desktop ready'",
+    "dist": "electron-builder --mac dmg"
+  },
+  "build": {
+    "appId": "in.gov.samvidhan.app",
+    "productName": "Samvidhan",
+    "mac": {
+      "category": "public.app-category.education",
+      "target": ["dmg"],
+      "identity": null
+    },
+    "files": [
+      "src/**/*",
+      "../web/dist/**/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^34.3.0",
+    "electron-builder": "^25.1.8"
+  }
+}
