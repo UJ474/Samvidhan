@@ -236,7 +236,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
               )}
             </div>
             <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-soft)', marginBottom: '0.5rem' }}>
-              For mobile players to scan the QR code and join, enter your live Render URL (e.g. <code>https://samvidhan.onrender.com</code>):
+              For mobile players to scan the QR code and join, enter your live Render URL (e.g. <code>https://samvidhan-rwdv.onrender.com</code>):
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <input
@@ -246,7 +246,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
                   setServerUrlState(e.target.value);
                   setServerUrl(e.target.value);
                 }}
-                placeholder="https://samvidhan.onrender.com"
+                placeholder="https://samvidhan-rwdv.onrender.com"
                 style={{
                   flex: 1,
                   padding: '0.65rem 0.85rem',
@@ -464,7 +464,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
                   type="text"
                   value={serverUrl}
                   onChange={(e) => setServerUrlState(e.target.value)}
-                  placeholder="https://samvidhan.onrender.com"
+                  placeholder="https://samvidhan-rwdv.onrender.com"
                   style={{
                     flex: 1,
                     padding: '0.3rem 0.5rem',

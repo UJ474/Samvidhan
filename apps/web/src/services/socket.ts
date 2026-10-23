@@ -1,16 +1,22 @@
 import { io, type Socket } from 'socket.io-client';
 
+export const DEFAULT_PRODUCTION_SERVER = 'https://samvidhan-rwdv.onrender.com';
+
 export function resolveServerUrl(): string {
   if (typeof window !== 'undefined') {
     const custom = window.localStorage.getItem('samvidhan_server_url');
     if (custom) return custom.trim().replace(/\/$/, '');
 
-    if (window.location.protocol === 'file:' || window.location.hostname === 'localhost') {
-      return 'http://localhost:3001';
+    if (window.location.protocol === 'file:') {
+      return DEFAULT_PRODUCTION_SERVER;
+    }
+
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return import.meta.env.VITE_SERVER_URL || DEFAULT_PRODUCTION_SERVER;
     }
     return window.location.origin;
   }
-  return import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
+  return import.meta.env.VITE_SERVER_URL || DEFAULT_PRODUCTION_SERVER;
 }
 
 export function getServerUrl(): string {

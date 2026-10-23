@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getArticleById, ORGANS, type Article } from '@samvidhan/core';
 import { storage } from '../services/storage.js';
 import { sounds } from '../services/sound.js';
+import { getServerUrl, setServerUrl } from '../services/socket.js';
 
 interface ProfileScreenProps {
   onBack: () => void;
@@ -224,8 +225,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <input
                 type="text"
-                defaultValue={localStorage.getItem('samvidhan_server_url') || 'http://localhost:3001'}
-                placeholder="http://localhost:3001 or https://your-server.onrender.com"
+                defaultValue={getServerUrl()}
+                placeholder="https://samvidhan-rwdv.onrender.com"
                 id="server-url-input"
                 style={{
                   flex: 1,
@@ -243,7 +244,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate
                 onClick={() => {
                   const val = (document.getElementById('server-url-input') as HTMLInputElement)?.value.trim();
                   if (val) {
-                    localStorage.setItem('samvidhan_server_url', val);
+                    setServerUrl(val);
                     window.location.reload();
                   }
                 }}
