@@ -8,7 +8,9 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "electron .",
-    "build": "echo 'Desktop ready'",
+    "prebuild": "rm -rf web && mkdir -p web && cp -r ../web/dist web/dist",
+    "build": "pnpm run prebuild",
+    "predist": "pnpm run prebuild",
     "dist": "electron-builder --mac dmg"
   },
   "build": {
@@ -21,7 +23,7 @@
     },
     "files": [
       "src/**/*",
-      "../web/dist/**/*"
+      "web/dist/**/*"
     ]
   },
   "devDependencies": {

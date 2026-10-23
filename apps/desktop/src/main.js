@@ -23,18 +23,25 @@ function createWindow() {
   });
 
   const devUrl = 'http://localhost:5173';
-  const prodPath = path.join(import.meta.dirname, '../../web/dist/index.html');
+  const asarDist = path.join(app.getAppPath(), 'web/dist/index.html');
+  const localDist = path.join(import.meta.dirname, '../web/dist/index.html');
+  const siblingDist = path.join(import.meta.dirname, '../../web/dist/index.html');
 
-  if (process.env.ELECTRON_DEV === '1') {
+  const prodPath = fs.existsSync(asarDist)
+    ? asarDist
+    : fs.existsSync(localDist)
+      ? localDist
+      : siblingDist;
+
+  if (process.env.ELECTRON_DEV === '1' && !app.isPackaged) {
     mainWindow.loadURL(devUrl).catch(() => {
-      if (fs.existsSync(prodPath)) {
-        mainWindow.loadFile(prodPath);
-      }
+      mainWindow.loadFile(prodPath);
     });
-  } else if (fs.existsSync(prodPath)) {
-    mainWindow.loadFile(prodPath);
   } else {
-    mainWindow.loadURL(devUrl);
+    mainWindow.loadFile(prodPath).catch((err) => {
+      console.error('Failed to load local HTML bundle:', err);
+      mainWindow.loadURL(devUrl);
+    });
   }
 
   createMenu();

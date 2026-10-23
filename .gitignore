@@ -5,3 +5,5 @@ out
 .DS_Store
 *.log
 brief_extracted.txt
+apps/desktop/web
+
