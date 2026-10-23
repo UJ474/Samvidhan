@@ -22,8 +22,8 @@
       "identity": null
     },
     "files": [
-      "src/**/*",
-      "web/dist/**/*"
+      "src/**",
+      "web/**"
     ]
   },
   "devDependencies": {

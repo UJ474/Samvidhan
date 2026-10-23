@@ -107,9 +107,12 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ onBack, prefilledCode = 
     });
 
     socket.on(SOCKET_EVENTS.ROOM_CLOSED, (payload: { reason: string }) => {
-      setErrorMsg(payload.reason || 'Room closed by host.');
+      setErrorMsg(payload.reason || 'The host has ended this game session.');
       setGameState('CONNECTING');
       setRoomInfo(null);
+      setCurrentQuestion(null);
+      setRevealData(null);
+      setIsLocked(false);
     });
 
     socket.on(SOCKET_EVENTS.ERROR, (payload: { message: string }) => {
@@ -165,14 +168,34 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ onBack, prefilledCode = 
     });
   };
 
-  const handleSelectAnswer = (choiceIndex: number) => {
+  // Answer selection handling
+  const handleSelectAnswer = (answerIdx: number) => {
     if (isLocked || !currentQuestion) return;
-    setSelectedAnswer(choiceIndex);
+    setSelectedAnswer(answerIdx);
+    setIsLocked(true);
     socket.emit(SOCKET_EVENTS.ANSWER_SUBMIT, {
       questionIndex: currentQuestion.index,
-      choice: choiceIndex,
+      choice: answerIdx,
     });
+    sounds.playPegTick();
   };
+
+  const handleLeaveGame = () => {
+    setGameState('CONNECTING');
+    setRoomInfo(null);
+    setCurrentQuestion(null);
+    setRevealData(null);
+    setIsLocked(false);
+    onBack();
+  };
+
+  const renderLeaveBar = () => (
+    <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}>
+      <button onClick={handleLeaveGame} className="civic-btn" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
+        ← Leave Room
+      </button>
+    </div>
+  );
 
   // View: Code and Nickname Form
   if (gameState === 'CONNECTING' && !roomInfo) {
@@ -279,6 +302,7 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ onBack, prefilledCode = 
   if (gameState === 'LOBBY') {
     return (
       <div className="container-civic" style={{ maxWidth: 640, textAlign: 'center' }}>
+        {renderLeaveBar()}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
           <Chakra size={44} spinning />
         </div>
@@ -641,7 +665,7 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ onBack, prefilledCode = 
           )}
         </div>
 
-        <button onClick={onBack} className="civic-btn civic-btn-primary" style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}>
+        <button onClick={handleLeaveGame} className="civic-btn civic-btn-primary" style={{ padding: '0.8rem 2.5rem', fontSize: '1.1rem' }}>
           Back to Main Menu
         </button>
       </div>

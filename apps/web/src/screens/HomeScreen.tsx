@@ -74,7 +74,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onSelectScreen }) => {
             BACKEND:
           </span>
           <button
-            onClick={() => onSelectScreen('profile')}
+            onClick={() => onSelectScreen('settings')}
             style={{
               fontSize: '0.75rem',
               fontFamily: 'var(--font-mono)',
@@ -88,7 +88,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onSelectScreen }) => {
             }}
             title="Click to view or change Server URL"
           >
-            {serverUrl} ✏️
+            {serverUrl} ⚙️
           </button>
         </div>
 
@@ -101,11 +101,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onSelectScreen }) => {
             👤 Profile &amp; Stats
           </button>
           <button
-            onClick={() => onSelectScreen('profile')}
+            onClick={() => onSelectScreen('settings')}
             className="civic-btn"
             style={{ padding: '0.35rem 0.85rem', fontSize: '0.85rem' }}
           >
-            ⚙️ Server Settings
+            ⚙️ Settings &amp; Server
           </button>
         </div>
       </div>

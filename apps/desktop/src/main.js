@@ -23,15 +23,22 @@ function createWindow() {
   });
 
   const devUrl = 'http://localhost:5173';
-  const asarDist = path.join(app.getAppPath(), 'web/dist/index.html');
-  const localDist = path.join(import.meta.dirname, '../web/dist/index.html');
-  const siblingDist = path.join(import.meta.dirname, '../../web/dist/index.html');
+  const candidatePaths = [
+    path.join(app.getAppPath(), 'web/dist/index.html'),
+    path.join(import.meta.dirname, '../web/dist/index.html'),
+    path.join(process.resourcesPath || '', 'app.asar/web/dist/index.html'),
+    path.join(process.resourcesPath || '', 'web/dist/index.html'),
+    path.join(import.meta.dirname, '../../web/dist/index.html'),
+  ];
 
-  const prodPath = fs.existsSync(asarDist)
-    ? asarDist
-    : fs.existsSync(localDist)
-      ? localDist
-      : siblingDist;
+  const prodPath =
+    candidatePaths.find((p) => {
+      try {
+        return fs.existsSync(p);
+      } catch {
+        return false;
+      }
+    }) || candidatePaths[0];
 
   if (process.env.ELECTRON_DEV === '1' && !app.isPackaged) {
     mainWindow.loadURL(devUrl).catch(() => {
@@ -39,8 +46,13 @@ function createWindow() {
     });
   } else {
     mainWindow.loadFile(prodPath).catch((err) => {
-      console.error('Failed to load local HTML bundle:', err);
-      mainWindow.loadURL(devUrl);
+      console.error('Failed to load local HTML bundle from', prodPath, err);
+      for (const alt of candidatePaths) {
+        if (alt !== prodPath && fs.existsSync(alt)) {
+          mainWindow.loadFile(alt).catch(() => {});
+          break;
+        }
+      }
     });
   }
 

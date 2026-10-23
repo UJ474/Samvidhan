@@ -6,4 +6,4 @@ out
 *.log
 brief_extracted.txt
 apps/desktop/web
-
+*.dmg

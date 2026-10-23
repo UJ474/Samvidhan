@@ -95,8 +95,9 @@ export const App: React.FC = () => {
           <SnakesLaddersScreen onBack={() => setCurrentScreen('home')} />
         )}
 
-        {currentScreen === 'profile' && (
+        {(currentScreen === 'profile' || currentScreen === 'settings') && (
           <ProfileScreen
+            initialTab={currentScreen === 'settings' ? 'settings' : 'profile'}
             onBack={() => setCurrentScreen('home')}
             onNavigateToArticle={handleNavigateToArticle}
             onToggleTheme={toggleTheme}

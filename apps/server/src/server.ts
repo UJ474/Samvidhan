@@ -205,7 +205,8 @@ export async function createServer() {
       if (!binding || !binding.isHost) return;
       const room = rooms.get(binding.code);
       if (room) {
-        room.finishGame();
+        room.closeRoom('The host has ended this game session.');
+        rooms.delete(binding.code);
       }
     });
 

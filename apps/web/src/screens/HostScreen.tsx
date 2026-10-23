@@ -44,6 +44,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   const [finishedData, setFinishedData] = useState<GameFinishedPayload | null>(null);
   const [timerRemaining, setTimerRemaining] = useState<number>(20);
   const [answerProgress, setAnswerProgress] = useState<{ answeredCount: number; totalPlayers: number }>({ answeredCount: 0, totalPlayers: 0 });
+  const [showQuitModal, setShowQuitModal] = useState<boolean>(false);
 
   const socket = getSocket();
 
@@ -191,6 +192,63 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
 
   const handleEndGame = () => {
     socket.emit(SOCKET_EVENTS.HOST_END);
+    onBack();
+  };
+
+  const handleQuitAndEnd = () => {
+    socket.emit(SOCKET_EVENTS.HOST_END);
+    setShowQuitModal(false);
+    onBack();
+  };
+
+  const renderQuitModal = () => {
+    if (!showQuitModal) return null;
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(22, 33, 58, 0.75)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '1rem',
+        }}
+      >
+        <div
+          className="civic-card"
+          style={{
+            maxWidth: 440,
+            padding: '2rem',
+            textAlign: 'center',
+            backgroundColor: '#FBF7EE',
+            border: '3px solid #B3261E',
+            boxShadow: 'var(--shadow-ink-lg)',
+          }}
+        >
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>⚠️</div>
+          <h3 className="font-display" style={{ fontSize: '1.6rem', color: '#B3261E', marginBottom: '0.5rem' }}>
+            Quit &amp; End Quiz?
+          </h3>
+          <p style={{ fontSize: '0.95rem', color: 'var(--color-ink-soft)', marginBottom: '1.5rem', lineHeight: 1.4 }}>
+            Quitting will immediately close the room and end the game for all connected participants.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            <button onClick={() => setShowQuitModal(false)} className="civic-btn" style={{ padding: '0.55rem 1.25rem' }}>
+              Cancel
+            </button>
+            <button
+              onClick={handleQuitAndEnd}
+              className="civic-btn"
+              style={{ padding: '0.55rem 1.25rem', backgroundColor: '#B3261E', color: '#FFFFFF', borderColor: '#B3261E' }}
+            >
+              End Session For All
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const exportCSV = () => {
@@ -358,10 +416,16 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   if (phase === 'LOBBY' && roomCreated) {
     return (
       <div className="container-civic" style={{ maxWidth: 960 }}>
+        {renderQuitModal()}
         {/* Top Control Bar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <button onClick={onBack} className="civic-btn" style={{ padding: '0.4rem 0.8rem' }}>
-            ✕ Exit Host
+          <button
+            onClick={() => setShowQuitModal(true)}
+            className="civic-btn"
+            style={{ padding: '0.4rem 0.8rem', color: '#B3261E', borderColor: '#B3261E' }}
+            title="End quiz session for all devices"
+          >
+            ✕ Quit Quiz
           </button>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button onClick={handleStartGame} className="civic-btn civic-btn-primary" style={{ padding: '0.6rem 1.5rem', fontSize: '1.1rem' }}>
@@ -537,13 +601,23 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   if (phase === 'WHEEL' && wheelSpin) {
     return (
       <div className="container-civic" style={{ maxWidth: 860, textAlign: 'center' }}>
+        {renderQuitModal()}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
             ROUND {wheelSpin.round} OF {wheelSpin.totalRounds}
           </span>
-          <button onClick={handleSkip} className="civic-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.85rem' }}>
-            Skip Spin (Esc)
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button onClick={handleSkip} className="civic-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.85rem' }}>
+              Skip Spin (Esc)
+            </button>
+            <button
+              onClick={() => setShowQuitModal(true)}
+              className="civic-btn"
+              style={{ padding: '0.3rem 0.8rem', fontSize: '0.85rem', color: '#B3261E', borderColor: '#B3261E' }}
+            >
+              ✕ Quit
+            </button>
+          </div>
         </div>
 
         <h2 className="font-display" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
@@ -568,6 +642,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
 
     return (
       <div className="container-civic" style={{ maxWidth: 960 }}>
+        {renderQuitModal()}
         {/* Host Control Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -599,6 +674,13 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
             </div>
             <button onClick={handleSkip} className="civic-btn" style={{ padding: '0.4rem 1rem' }}>
               Skip to Reveal (Esc)
+            </button>
+            <button
+              onClick={() => setShowQuitModal(true)}
+              className="civic-btn"
+              style={{ padding: '0.4rem 0.8rem', color: '#B3261E', borderColor: '#B3261E' }}
+            >
+              ✕ Quit
             </button>
           </div>
         </div>
@@ -675,13 +757,23 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
 
     return (
       <div className="container-civic" style={{ maxWidth: 860 }}>
+        {renderQuitModal()}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h2 className="font-display" style={{ fontSize: '2rem', margin: 0 }}>
             Question Reveal
           </h2>
-          <button onClick={handleNextAction} className="civic-btn civic-btn-primary" style={{ padding: '0.65rem 1.5rem' }}>
-            Show Leaderboard (Space) →
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <button onClick={handleNextAction} className="civic-btn civic-btn-primary" style={{ padding: '0.65rem 1.5rem' }}>
+              Show Leaderboard (Space) →
+            </button>
+            <button
+              onClick={() => setShowQuitModal(true)}
+              className="civic-btn"
+              style={{ padding: '0.65rem 1rem', color: '#B3261E', borderColor: '#B3261E' }}
+            >
+              ✕ Quit
+            </button>
+          </div>
         </div>
 
         {/* Answer Explanation */}
@@ -741,13 +833,23 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
   if (phase === 'LEADERBOARD' && leaderboardData) {
     return (
       <div className="container-civic" style={{ maxWidth: 860 }}>
+        {renderQuitModal()}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h2 className="font-display" style={{ fontSize: '2.4rem', margin: 0 }}>
             Current Standings
           </h2>
-          <button onClick={handleNextAction} className="civic-btn civic-btn-primary" style={{ padding: '0.65rem 1.5rem', fontSize: '1.05rem' }}>
-            Next Question (Space) →
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <button onClick={handleNextAction} className="civic-btn civic-btn-primary" style={{ padding: '0.65rem 1.5rem', fontSize: '1.05rem' }}>
+              Next Question (Space) →
+            </button>
+            <button
+              onClick={() => setShowQuitModal(true)}
+              className="civic-btn"
+              style={{ padding: '0.65rem 1rem', color: '#B3261E', borderColor: '#B3261E' }}
+            >
+              ✕ Quit
+            </button>
+          </div>
         </div>
 
         <div className="civic-card" style={{ padding: '1.5rem' }}>
@@ -873,7 +975,7 @@ export const HostScreen: React.FC<HostScreenProps> = ({ onBack, isProjectorMode 
           <button onClick={exportCSV} className="civic-btn" style={{ padding: '0.75rem 1.5rem', fontSize: '1rem' }}>
             📥 Export Results CSV
           </button>
-          <button onClick={onBack} className="civic-btn civic-btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}>
+          <button onClick={handleQuitAndEnd} className="civic-btn civic-btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}>
             Finish &amp; Return Home
           </button>
         </div>

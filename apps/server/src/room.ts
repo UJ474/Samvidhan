@@ -346,15 +346,6 @@ export class GameRoom {
       totalPlayers: connectedCount,
     });
 
-    // If all connected players have answered, reveal early!
-    if (connectedCount > 0 && answeredCount >= connectedCount) {
-      if (this.questionTimer) clearTimeout(this.questionTimer);
-      // Brief 400ms pause to let user see locked state
-      this.questionTimer = setTimeout(() => {
-        this.revealAnswer();
-      }, 400);
-    }
-
     return true;
   }
 
@@ -544,5 +535,11 @@ export class GameRoom {
 
   public touch(): void {
     this.lastActiveAt = Date.now();
+  }
+
+  public closeRoom(reason: string = 'The host has ended this session.'): void {
+    if (this.questionTimer) clearTimeout(this.questionTimer);
+    this.state = 'FINISHED';
+    this.io.to(this.roomChannel).emit(SOCKET_EVENTS.ROOM_CLOSED, { reason });
   }
 }
