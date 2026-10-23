@@ -5,7 +5,9 @@ export const DEFAULT_PRODUCTION_SERVER = 'https://samvidhan-rwdv.onrender.com';
 export function resolveServerUrl(): string {
   if (typeof window !== 'undefined') {
     const custom = window.localStorage.getItem('samvidhan_server_url');
-    if (custom) return custom.trim().replace(/\/$/, '');
+    if (custom && custom !== 'http://localhost:3001' && custom !== 'http://127.0.0.1:3001') {
+      return custom.trim().replace(/\/$/, '');
+    }
 
     if (window.location.protocol === 'file:') {
       return DEFAULT_PRODUCTION_SERVER;
